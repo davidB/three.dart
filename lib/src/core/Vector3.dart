@@ -384,6 +384,34 @@ class Vector3 implements IVector3 {
     return this;
   }
 
+  Vector3 applyMatrix3( Matrix3 m ) {
+
+    var x = this.x;
+    var y = this.y;
+    var z = this.z;
+
+    var e = m.elements;
+
+    this.x = e[0] * x + e[3] * y + e[6] * z;
+    this.y = e[1] * x + e[4] * y + e[7] * z;
+    this.z = e[2] * x + e[5] * y + e[8] * z;
+
+    return this;
+  }
+
+  Vector3 applyMatrix4(Matrix4 m) {
+    var x = this.x, y = this.y, z = this.z;
+
+    var e = m.elements;
+
+    this.x = e[0] * x + e[4] * y + e[8]  * z + e[12];
+    this.y = e[1] * x + e[5] * y + e[9]  * z + e[13];
+    this.z = e[2] * x + e[6] * y + e[10] * z + e[14];
+
+    return this;
+
+  }
+
   bool equals( v ) {
     if (v == null) return false;
     return ( ( v.x == this.x ) && ( v.y == this.y ) && ( v.z == this.z ) );
