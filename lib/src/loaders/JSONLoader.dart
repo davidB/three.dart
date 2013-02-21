@@ -39,7 +39,7 @@ class JSONLoader extends Loader {
           if ( !xhr.responseText.isEmpty ) {
 
             var json = JSON.parse( xhr.responseText );
-            _createModel( json, callback, texturePath );
+            createModel( json, callback, texturePath );
 
           } else {
 
@@ -88,7 +88,7 @@ class JSONLoader extends Loader {
 
   bool _isBitSet( value, position ) => (value & ( 1 << position )) > 0;
 
-  _createModel( Map json, LoadedCallback callback, String texturePath ) {
+  createModel( Map json, LoadedCallback callback, String texturePath ) {
 
     var geometry = new Geometry(),
         scale = ( json.containsKey("scale")) ? 1.0 / json["scale"] : 1.0;
