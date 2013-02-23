@@ -176,25 +176,21 @@ class Object3D {
   }
 
   Object3D getChildByName( String name, bool doRecurse ) {
-    int c;
-    int cl = children.length;
-    Object3D child, recurseResult;
-
-    children.forEach((child){
+    for(var i = children.length - 1; i > -1; i--) {
+      var child = children[i];
 
       if ( child.name == name ) {
         return child;
       }
 
       if ( doRecurse ) {
-        recurseResult = child.getChildByName( name, doRecurse );
+        var recurseResult = child.getChildByName( name, doRecurse );
 
         if ( recurseResult != null ) {
           return recurseResult;
         }
       }
-    });
-
+    }
     return null;
   }
 
@@ -242,9 +238,7 @@ class Object3D {
   localToWorld( vector ) => matrixWorld.multiplyVector3( vector );
 
   clone() {
-
-    // TODO
-
+    throw new UnimplementedError("TODO");
   }
 
   static Matrix4 ___m1;
