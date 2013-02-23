@@ -122,7 +122,7 @@ void merge(Geometry geometry1, Geometry geometry2, [Matrix4 matrix, Matrix3 norm
   for (var i = 0, il = uvs2.length; i < il; i ++ ) {
     var uv = uvs2[ i ], uvCopy = [];
     for ( var j = 0, jl = uv.length; j < jl; j ++ ) {
-      uvCopy.add( new Vector2( uv[ j ].x, uv[ j ].y ) );
+      uvCopy.add( new Vector2( uv[ j ].u, uv[ j ].v ) );
     }
     uvs1.add( uvCopy );
   }
