@@ -952,7 +952,7 @@ class WebGLRenderer implements Renderer {
 
 		if ( (material.vertexColors != null) &&  (material.vertexColors != NoColors) ) {
 
-			return material.vertexColors;
+			return material.vertexColors != 0;
 
 		}
 
@@ -5628,6 +5628,8 @@ class WebGLRenderer implements Renderer {
 				spositions.length = soffset + 3;
 				sdirections.length = soffset + 3;
 				sdistances.length = slength + 1;
+				sangles.length = slength + 1;
+				sexponents.length = slength + 1;
 
 				if ( gammaInput ) {
 
@@ -6013,7 +6015,7 @@ class WebGLRenderer implements Renderer {
 
 		glprogram = _gl.createProgram();
 
-		var prefix_vertex = Strings.join([
+		var prefix_vertex = [
 
 			"precision $precision float;",
 
@@ -6110,9 +6112,9 @@ class WebGLRenderer implements Renderer {
 
 			""
 
-		],"\n");
+		].join("\n");
 
-		var prefix_fragment = Strings.join([
+		var prefix_fragment = [
 
 			"precision $precision float;",
 
@@ -6154,7 +6156,7 @@ class WebGLRenderer implements Renderer {
 			"uniform vec3 cameraPosition;",
 			""
 
-		], "\n");
+		].join("\n");
 
 		var glFragmentShader = getShader( "fragment", "$prefix_fragment$fragmentShader" );
 		var glVertexShader = getShader( "vertex", "$prefix_vertex$vertexShader" );
@@ -6989,7 +6991,7 @@ class Buffer {
 class WebGLObject {
 
   bool __webglInit = false;
-  var __webglActive;
+  bool __webglActive = false;
 
   Matrix4 _modelViewMatrix;
   Matrix3 _normalMatrix;
