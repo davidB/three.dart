@@ -92,7 +92,7 @@ get ShaderChunk  {
 
           reflectVec = refract( cameraToVertex, normal, refractionRatio );
 
-        } else { 
+        } else {
 
           reflectVec = reflect( cameraToVertex, normal );
 
@@ -747,7 +747,7 @@ get ShaderChunk  {
     #endif
 
     varying vec3 vViewPosition;
-    varying vec3 vNormal;"
+    varying vec3 vNormal;
 
   """,
 
@@ -917,7 +917,7 @@ get ShaderChunk  {
     #if MAX_DIR_LIGHTS > 0
 
       vec3 dirDiffuse  = vec3( 0.0 );
-      vec3 dirSpecular = vec3( 0.0 );" ,
+      vec3 dirSpecular = vec3( 0.0 );
 
       for( int i = 0; i < MAX_DIR_LIGHTS; i ++ ) {
 
