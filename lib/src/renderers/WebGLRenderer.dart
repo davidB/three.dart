@@ -677,7 +677,7 @@ class WebGLRenderer implements Renderer {
 
 			}
 
-			for ( var a in material.attributes ) {
+			for ( var a in material.attributes.keys ) {
 
 				var attribute = material.attributes[ a ];
 
@@ -1322,7 +1322,7 @@ class WebGLRenderer implements Renderer {
 
 				if ( customAttribute.needsUpdate || object.sortParticles ) {
 
-					_gl.bindBuffer( WebGLRenderingContext.ARRAY_BUFFER, customAttribute.buffer );
+					_gl.bindBuffer( WebGLRenderingContext.ARRAY_BUFFER, customAttribute.buffer.glbuffer );
 					_gl.bufferData( WebGLRenderingContext.ARRAY_BUFFER, customAttribute.array, hint );
 
 				}
@@ -3475,7 +3475,7 @@ class WebGLRenderer implements Renderer {
 
 					if( attributes[ attribute.buffer.belongsToAttribute ] >= 0 ) {
 
-						_gl.bindBuffer( WebGLRenderingContext.ARRAY_BUFFER, attribute.buffer );
+						_gl.bindBuffer( WebGLRenderingContext.ARRAY_BUFFER, attribute.buffer.glbuffer );
 						_gl.vertexAttribPointer( attributes[ attribute.buffer.belongsToAttribute ], attribute.size, WebGLRenderingContext.FLOAT, false, 0, 0 );
 
 					}
@@ -4577,7 +4577,7 @@ class WebGLRenderer implements Renderer {
 
 			customAttributesDirty = (material.attributes != null) && areCustomAttributesDirty( material );
 
-			if ( geometry.verticesNeedUpdate || geometry.colorsNeedUpdate || object.sortParticles || customAttributesDirty ) {
+			if ( geometry.verticesNeedUpdate == true || geometry.colorsNeedUpdate == true || object.sortParticles == true|| customAttributesDirty == true) {
 
 				setParticleBuffers( geometry, WebGLRenderingContext.DYNAMIC_DRAW, object );
 
@@ -4594,9 +4594,9 @@ class WebGLRenderer implements Renderer {
 
 	// Objects updates - custom attributes check
 
-	areCustomAttributesDirty ( material ) {
+	bool areCustomAttributesDirty ( material ) {
 
-		for ( var m in material.attributes ) {
+		for ( var m in material.attributes.values ) {
 
 			if ( m.needsUpdate ) return true;
 
@@ -4608,7 +4608,7 @@ class WebGLRenderer implements Renderer {
 
 	clearCustomAttributes ( material ) {
 
-		for ( var m in material.attributes ) {
+		for ( var m in material.attributes.values ) {
 
 			m.needsUpdate = false;
 
@@ -4794,7 +4794,7 @@ class WebGLRenderer implements Renderer {
 
 		if ( material.attributes != null) {
 
-			for ( a in material.attributes ) {
+			for ( a in material.attributes.keys ) {
 
 				if( attributes[ a ] != null && attributes[ a ] >= 0 ) _gl.enableVertexAttribArray( attributes[ a ] );
 
@@ -4950,15 +4950,15 @@ class WebGLRenderer implements Renderer {
 
 			} else if ( material.isParticleBasicMaterial ) {
 
-				refreshUniformsParticle( m_uniforms, material );
+				refreshUniformsParticle( m_uniforms, material._material as ParticleBasicMaterial );
 
 			} else if ( material.isMeshPhongMaterial ) {
 
-				refreshUniformsPhong( m_uniforms, material );
+				refreshUniformsPhong( m_uniforms, material._material as MeshPhongMaterial );
 
 			} else if ( material.isMeshLambertMaterial ) {
 
-				refreshUniformsLambert( m_uniforms, material );
+				refreshUniformsLambert( m_uniforms, material._material as MeshLambertMaterial );
 
 			} else if ( material.isMeshDepthMaterial ) {
 
@@ -5137,7 +5137,7 @@ class WebGLRenderer implements Renderer {
 
 	}
 
-	refreshUniformsParticle ( uniforms, material ) {
+	refreshUniformsParticle ( uniforms, ParticleBasicMaterial material ) {
 
 		uniforms["psColor"].value = material.color;
 		uniforms["opacity"].value = material.opacity;
@@ -5165,7 +5165,7 @@ class WebGLRenderer implements Renderer {
 
 	}
 
-	refreshUniformsPhong ( uniforms, material ) {
+	refreshUniformsPhong ( uniforms, MeshPhongMaterial material ) {
 
 		uniforms["shininess"].value = material.shininess;
 
@@ -5191,7 +5191,7 @@ class WebGLRenderer implements Renderer {
 
 	}
 
-	refreshUniformsLambert ( uniforms, material ) {
+	refreshUniformsLambert ( uniforms, MeshLambertMaterial material ) {
 
 		if ( gammaInput ) {
 
@@ -7033,12 +7033,12 @@ class WebGLObject {
 
   get _hasGeometry => (object is Mesh) || (object is ParticleSystem) || (object is Line);
 
-  get morphTargetBase => (object as dynamic).morphTargetBase;
+  get morphTargetBase => (object is Mesh) ? (object as Mesh).morphTargetBase : 0;
 
   get receiveShadow => object.receiveShadow;
 
-  get morphTargetForcedOrder => (object as Mesh).morphTargetForcedOrder;
-  get morphTargetInfluences => (object as Mesh).morphTargetInfluences;
+  get morphTargetForcedOrder => (object is Mesh) ? (object as Mesh).morphTargetForcedOrder : [];
+  get morphTargetInfluences => (object is Mesh) ? (object as Mesh).morphTargetInfluences : [];
 
   // only SkinnedMesh
   get useVertexTexture => (object as dynamic).useVertexTexture;
